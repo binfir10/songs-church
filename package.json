@@ -25,7 +25,6 @@
     "bad-words": "^3.0.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "eslint": "^9.4.0",
     "eslint-config-next": "14.2.3",
     "express": "^4.19.2",
     "formik": "^2.4.6",
@@ -43,6 +42,7 @@
   },
   "devDependencies": {
     "@types/bad-words": "^3.0.3",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "3.3.1"
   }
