@@ -22,7 +22,7 @@ export default function Navbar() {
           title="Add New"
         >
           <MicVocal className='w-5 h-5 mr-1' />
-          Crear
+          Agregar
         </Link>
 
         <ModeToggle />

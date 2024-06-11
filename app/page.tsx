@@ -43,8 +43,8 @@ export default async function page() {
   const sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <section className='flex flex-col md:container max-md:items-center px-3 2xl:w-9/12'>
-      <h1 className='font-bold items-center md:items-start text-3xl lg:text-5xl'>Canciones</h1>
+    <section className='flex flex-col md:container  px-3 2xl:w-9/12 '>
+      <h1 className='font-bold text-left text-4xl lg:text-5xl'>Canciones</h1>
       <DataTable columns={colums} data={sortedSongs} />
     </section>
   )

@@ -49,7 +49,7 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
   return (
     <div className=''>
       {/*filter*/}
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 min-w-full">
         <Input
           placeholder="Buscar por Nombre..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

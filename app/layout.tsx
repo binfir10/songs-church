@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="min-h-screen flex flex-col md:items-center py-24 ">
+          <main className="min-h-dvh flex flex-col md:items-center py-24 ">
             {children}
           </main>
           <FooterComponent />
