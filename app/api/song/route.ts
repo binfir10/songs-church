@@ -1,21 +1,25 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { tursoClient } from '@/lib/tursoClient';
+import { v4 as uuidv4 } from 'uuid';
 
 import Filter from 'bad-words';
-import { Songs } from '@/app/page';
+import { Songs } from '@/lib/types';
+
 
 export const runtime = 'edge';
 
-export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const { name, author, man, woman } = Object.fromEntries(formData);
 
-  // Create redirect url
-  const addNewUrl = req.nextUrl.clone();
-  addNewUrl.pathname = '/add-song';
+//create song
+export async function POST(req: NextRequest) {
+    const addNewUrl = req.nextUrl.clone();
+  addNewUrl.pathname = '/song';
+  try {
+    const id = uuidv4();
+  const formData = await req.formData();
+  const { name, author, man, woman, tone, lyrics } = Object.fromEntries(formData);
 
   if (!name || !author) {
-    NextResponse.redirect(addNewUrl + '?error=Fill in all fields!', {
+    NextResponse.redirect(addNewUrl, {
       status: 422,
     });
   }
@@ -23,9 +27,11 @@ export async function POST(req: NextRequest) {
     typeof name !== 'string' ||
     typeof author !== 'string' ||
     typeof man !== 'string' ||
-    typeof woman !== 'string'
+    typeof woman !== 'string' ||
+    typeof tone !== 'string' ||
+    typeof lyrics !== 'string'
   ) {
-    return NextResponse.redirect(addNewUrl + '?error=Wrong Types', {
+    return NextResponse.redirect(addNewUrl, {
       status: 422,
     });
   }
@@ -38,21 +44,23 @@ export async function POST(req: NextRequest) {
 
   const filter = new Filter();
   const add = await tursoClient().execute({
-    sql: 'insert into songs(name, author, man, woman) values(?, ?, ?, ?);',
-    args: [filter.clean(name), filter.clean(author), man, woman],
+    sql: 'insert into songs(id, name, author, man, woman, tone, lyrics) values(?, ?, ?, ?, ?, ?, ?);',
+    args: [id,filter.clean(name), filter.clean(author), man, woman, tone, filter.clean(lyrics)],
   });
 
-  return NextResponse.redirect(addNewUrl + '?message=Canción Agregada!', {
+  return NextResponse.redirect(addNewUrl, {
     status: 302,
   });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.redirect(addNewUrl, {
+      status: 500,
+    });
+  }
+  
 }
 
-/**
- * @description Gets framework from the database by filtering the name and url columns
- * @param name Name of the framework being fetched
- * @param url GitHub url of the framework being fetched
- * @returns {Promise<Framework|null>}
- */
+
 async function getSongs(name: string): Promise<Songs | null> {
   const response = await tursoClient().execute({
     sql: 'select * from songs where name = ?',

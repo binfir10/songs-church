@@ -4,51 +4,127 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Tiptap from '@/components/Editor';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { getSongById } from '@/lib/getData';
 export const runtime = 'edge';
+export const revalidate = 0;
 
 
-export default function AddSongpage() {
-  const [lyrics, setLyrics] = useState('');
+export default function EditSongPage({ params }: { params: { id: string } }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    author: '',
+    tone: '',
+    man: '',
+    woman: '',
+    lyrics: ''
+  });
+
   const lyricsInputRef = useRef<HTMLInputElement | null>(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const song = await getSongById(params.id);
+      if (song) {
+        setFormData({
+          name: song.name,
+          author: song.author,
+          tone: song.tone,
+          man: song.man,
+          woman: song.woman,
+          lyrics: song.lyrics
+        });
+      }
+    };
+
+    fetchData();
+  }, [params.id]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
   const handleLyricsChange = (richText: string) => {
-    setLyrics(richText);
+    setFormData(prevState => ({
+      ...prevState,
+    }));
     if (lyricsInputRef.current) {
       lyricsInputRef.current.value = richText;
     }
   };
+  const handleSubmit = async (e: React.FormEvent) => {
+
+    e.preventDefault(); // Prevent the default form submission
+    const data = new FormData();
+    data.append('name', formData.name);
+    data.append('author', formData.author);
+    data.append('tone', formData.tone);
+    data.append('man', formData.man);
+    data.append('woman', formData.woman);
+    data.append('lyrics', formData.lyrics);
+    console.log("console log data:", data)
+    try {
+      const res = await fetch(`/api/song/${params.id}`, {
+        method: 'PUT',
+        body: data,
+      });
+      console.log("console log res:",res)
+      if (res.ok) {
+        console.log('Cancion actualizada con exito');
+        return { success: true };
+      } else {
+        const errorData = await res.json();
+        console.error('Error updating song:', errorData);
+        return { success: false, error: errorData };
+      }
+    } catch (error) {
+      console.error('Error updating Song:', error);
+      return { success: false, error: 'Unexpected error occurred' };
+    }
+   
+  };
+
   return (
     <section className="flex flex-col md:container items-center ">
       <h1 className='font-bold items-center md:items-start text-3xl lg:text-5xl'>Cargar Canción</h1>
 
-
       <div className="mb-32 text-left w-[80vw] max-w-2xl flex flex-col">
-
         <form
-          action="/api/song"
-          method="post"
+          onSubmit={ handleSubmit}
           className="flex flex-col w-full gap-3"
         >
           <div>
             <Label>Nombre</Label>
-
             <Input
               type="text"
               name="name"
-              id="song-name"
+              id="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Nombre de la cancion"
               required
             />
           </div>
 
           <div>
-            <Label >Autor</Label>
-
+            <Label>Autor</Label>
             <Input
               type="text"
               name="author"
               id="author"
+              value={formData.author}
+              onChange={handleChange}
               placeholder="Hillsong"
               required
             />
@@ -56,9 +132,11 @@ export default function AddSongpage() {
 
           <div>
             <Label>Rapida/Lenta</Label>
-
-            <Select name='tone' >
-
+            <Select
+              name="tone"
+              value={formData.tone}
+              onValueChange={(value) => handleSelectChange('tone', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una opción..." />
               </SelectTrigger>
@@ -71,14 +149,15 @@ export default function AddSongpage() {
           </div>
 
           <div>
-            <Label >Nota Hombre</Label>
-
-            <Select name='man' >
-
+            <Label>Nota Hombre</Label>
+            <Select
+              name="man"
+              value={formData.man}
+              onValueChange={(value) => handleSelectChange('man', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una nota" />
               </SelectTrigger>
-
               <SelectContent>
                 <SelectItem value="Do">Do</SelectItem>
                 <SelectItem value="Do#">Do#</SelectItem>
@@ -92,19 +171,20 @@ export default function AddSongpage() {
                 <SelectItem value="La">La</SelectItem>
                 <SelectItem value="La#">La#</SelectItem>
                 <SelectItem value="Si">Si</SelectItem>
-
               </SelectContent>
             </Select>
           </div>
+
           <div>
-            <Label >Nota Mujer</Label>
-
-            <Select name='woman' >
-
+            <Label>Nota Mujer</Label>
+            <Select
+              name="woman"
+              value={formData.woman}
+              onValueChange={(value) => handleSelectChange('woman', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una nota" />
               </SelectTrigger>
-
               <SelectContent>
                 <SelectItem value="Do">Do</SelectItem>
                 <SelectItem value="Do#">Do#</SelectItem>
@@ -118,20 +198,19 @@ export default function AddSongpage() {
                 <SelectItem value="La">La</SelectItem>
                 <SelectItem value="La#">La#</SelectItem>
                 <SelectItem value="Si">Si</SelectItem>
-
               </SelectContent>
             </Select>
           </div>
-          <Tiptap onChange={handleLyricsChange} value='' />
+
+          <Tiptap onChange={handleLyricsChange} value={formData.lyrics} />
 
           {/* Campo oculto para las lyrics */}
           <input
             type="hidden"
+            value={formData.lyrics}
             name="lyrics"
             ref={lyricsInputRef}
           />
-
-
 
           <div className="flex justify-center p-2">
             <Button

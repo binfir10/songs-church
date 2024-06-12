@@ -49,8 +49,47 @@
   }
 }
 
+html{
+  scrollbar-width:none;
+  scroll-behavior: smooth
+}
 @layer base {
   body {
     @apply bg-background text-foreground;
+
   }
 }
+body{
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+  margin:  auto 0 ;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+
+    
+  }
+}
+
+

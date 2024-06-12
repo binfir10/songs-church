@@ -5,7 +5,7 @@ import { Home, HomeIcon, MicVocal } from 'lucide-react';
 
 export default function Navbar() {
   return (
-    <nav className="fixed left-0 top-0 flex w-screen border-b border-primary/30 backdrop-blur-sm justify-around ">
+    <nav className="fixed left-0 top-0 flex w-screen border-b border-primary/30 backdrop-blur-sm justify-around h-16 z-10 ">
       <div className="py-2 px-4 flex  items-center justify-around md:justify-between text-foreground font-bold w-full md:w-2/3">
         <Link
           href="/"

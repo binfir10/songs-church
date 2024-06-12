@@ -5,7 +5,7 @@ import { Public_Sans as Font } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 
 
-const font = Font({ subsets: ['latin'], weight: '400' });
+const font = Font({ subsets: ['latin'], weight: ['100','200','300','400','500','600','700','800','900'] });
 
 export const metadata = {
   title: "Canciones - El Poder de la Cruz",
@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${font.className} antialiased`}>
+      <body className={`${font.className} antialiased ` }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="min-h-dvh flex flex-col md:items-center py-24 ">
+          <main className="flex flex-col md:items-center py-24">
             {children}
           </main>
           <FooterComponent />

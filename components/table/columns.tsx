@@ -3,7 +3,9 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { Songs } from "@/app/page";
+import { Songs } from "@/lib/types";
+import Link from "next/link";
+
 
 export const colums: ColumnDef<Songs>[] = [
   {
@@ -19,6 +21,12 @@ export const colums: ColumnDef<Songs>[] = [
       )
     },
     accessorKey: 'name',
+    cell: ({ row }) => (
+      <Link href={`/song/${row.original.id}`}>
+        {row.original.name}
+      </Link>
+     
+    ),
   },
   {
     header: ({ column }) => {
@@ -43,11 +51,17 @@ export const colums: ColumnDef<Songs>[] = [
     ),
   },
   {
-    header: 'Hombre',
-    accessorKey: 'man',
-  },
-  {
-    header: 'Mujer',
-    accessorKey: 'woman',
+    header: ({ column }) => {
+      return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Autor
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      )
+    },
+    accessorKey: 'tone',
   },
 ]
