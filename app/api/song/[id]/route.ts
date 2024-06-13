@@ -66,15 +66,3 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     return NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
   }
 }
-
-
-export async function GET(id: string): Promise<Songs | null> {
-    const res = await tursoClient().execute({
-      sql: 'SELECT * FROM songs WHERE id = ?',
-      args: [id],
-    });
-
-
-    return res.rows?.[0] as unknown as Songs;
-  
-}
