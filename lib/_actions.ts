@@ -1,4 +1,5 @@
 'use server'
+import { NextApiRequest } from "next";
 import { tursoClient } from "./tursoClient";
 import { Songs } from "./types";
 
@@ -45,20 +46,19 @@ export async function getAllSongs(): Promise<{ songs: Songs[] }> {
   }
 }
 
-export async function DeleteSong(id: string) {
+export async function deleteSong(id: string) {
   try {
-    const res = await fetch(`/api/song/${id}`, {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/song/${id}`;
+    const res = await fetch(url, {
       method: 'DELETE',
     });
     const data = await res.json();
-    if (res.ok)
-      alert('Cancion eliminada con exito');
-      // Optionally, you can refresh the page or update the state to remove the deleted framework from the UI
-      window.location.reload(); // Simple way to refresh the page
-
-    
-  } catch (error) {
+    if (res.ok) {
+      return { success: true };
+    }
+  } catch (error:any) {
     console.error('Error deleting Song:', error);
-    alert('Unexpected error occurred');
+   return { success: false, error: error.message };
   }
 }
+

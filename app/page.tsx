@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 export const runtime = 'edge';
@@ -6,7 +7,7 @@ export const revalidate = 0;
 
 export default async function page() {
   return (
-    <section className='flex flex-col md:container gap-5  px-3 2xl:w-9/12  items-center justify-center '>
+    <section className='flex flex-col md:container gap-5   px-3 2xl:w-9/12  items-center justify-center hero  '>
       <h1 className='font-bold text-left text-4xl lg:text-5xl'>Página Principal</h1>
       <div>
           <Button asChild>
@@ -16,6 +17,7 @@ export default async function page() {
           </Button>
 
       </div>
+
 
     </section>
   )

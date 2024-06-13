@@ -1,18 +1,28 @@
 import { DeleteButton } from "@/components/DeleteButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getSongById } from "@/lib/getData";
+import { getSongById } from "@/lib/_actions";
+
 export const runtime = 'edge';
 export const revalidate = 0;
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
+import Loading from "./loading";
 
-export default async function page({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function Page({ params }: PageProps) {
   console.log(params.id);
   
   const song = await getSongById(params.id);
 
   return (
+    <Suspense fallback={<Loading />}>
+
     <section className="flex flex-col sm:container gap-5 justify-center px-2 min-[350px]:px-8 2xl:w-9/12">
       <div className="flex justify-between w-11/12 gap-3 max-sm:flex-col">
         <div className="font-bold text-left text-4xl lg:text-5xl flex max-md:flex-col max-md:items-start items-center gap-3 ">
@@ -44,9 +54,10 @@ export default async function page({ params }: { params: { id: string } }) {
         <div
           className=" rounded-md p-2 w-full max-w-2xl mt-1"
           dangerouslySetInnerHTML={{ __html: song?.lyrics ?? "" }}
-        />
+          />
       </div>
 
     </section>
+          </Suspense>
   );
 }

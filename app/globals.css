@@ -73,6 +73,7 @@ input, button, textarea, select {
   font: inherit;
 }
 
+
 p {
   text-wrap: pretty;
 }

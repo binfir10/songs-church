@@ -4,13 +4,19 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Tiptap from '@/components/Editor';
-import { useRef, useState, useEffect } from 'react';
-import { getSongById } from '@/lib/getData';
+import { useRef, useState, useEffect, Suspense } from 'react';
+
+import { useRouter } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { getSongById } from '@/lib/_actions';
+import Loading from './loading';
+
 export const runtime = 'edge';
-export const revalidate = 0;
+
 
 
 export default function EditSongPage({ params }: { params: { id: string } }) {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     author: '',
@@ -81,7 +87,9 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
       });
       console.log("console log res:",res)
       if (res.ok) {
-        console.log('Cancion actualizada con exito');
+        router.push('/song')
+        revalidatePath('/song')
+
         return { success: true };
       } else {
         const errorData = await res.json();
@@ -96,8 +104,10 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
   };
 
   return (
+    <Suspense fallback={<Loading />}>
+
     <section className="flex flex-col md:container items-center ">
-      <h1 className='font-bold items-center md:items-start text-3xl lg:text-5xl'>Cargar Canción</h1>
+      <h1 className='font-bold items-center md:items-start text-3xl lg:text-5xl'>Editar Canción</h1>
 
       <div className="mb-32 text-left w-[80vw] max-w-2xl flex flex-col">
         <form
@@ -223,6 +233,8 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
           </div>
         </form>
       </div>
-    </section>
+      </section>
+    </Suspense>
+
   );
 }

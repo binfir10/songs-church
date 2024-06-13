@@ -1,8 +1,9 @@
 import React, { Suspense } from 'react'
 import { DataTable } from '@/components/table/data-table';
 import { colums } from '@/components/table/columns';
-import { getAllSongs } from '@/lib/getData';
+
 import Loading from './loading';
+import { getAllSongs } from '@/lib/_actions';
 export const runtime = 'edge';
 export const revalidate = 0;
 

@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { tursoClient } from '@/lib/tursoClient';
 import { URL } from 'url';
+import { Songs } from '@/lib/types';
 export const runtime = 'edge';
 
 
@@ -43,10 +44,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 
 //delete song by id
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
+ const id = params.id;
 
     if (!id) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
@@ -65,4 +65,16 @@ export async function DELETE(req: NextRequest) {
     console.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
   }
+}
+
+
+export async function GET(id: string): Promise<Songs | null> {
+    const res = await tursoClient().execute({
+      sql: 'SELECT * FROM songs WHERE id = ?',
+      args: [id],
+    });
+
+
+    return res.rows?.[0] as unknown as Songs;
+  
 }
