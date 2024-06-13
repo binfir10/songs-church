@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { tursoClient } from '@/lib/tursoClient';
 import { URL } from 'url';
 import { Songs } from '@/lib/types';
+import { revalidatePath } from 'next/cache';
 export const runtime = 'edge';
 
 
@@ -31,7 +32,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       sql: 'UPDATE songs SET name = ?, author = ?, man = ?, woman = ?, tone = ?, lyrics = ? WHERE id = ?',
       args: [name, author, man, woman, tone, lyrics, id],
     });
-
+    revalidatePath("/song")
     return NextResponse.json(
       { message: 'Cancion actualizada con exito' },
       { status: 200 }

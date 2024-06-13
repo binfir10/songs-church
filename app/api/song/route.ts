@@ -36,9 +36,9 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const frameworkExists = await getSongs(name as string);
+  const songExists = await getSongs(name as string);
 
-  if (frameworkExists !== null) {
+  if (songExists !== null) {
     return NextResponse.redirect(addNewUrl, { status: 302 });
   }
 

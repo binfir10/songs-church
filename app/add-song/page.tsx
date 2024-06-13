@@ -5,10 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Tiptap from '@/components/Editor';
 import { useRef, useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
 export const runtime = 'edge';
 
 
 export default function AddSongpage() {
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const [lyrics, setLyrics] = useState('');
   const lyricsInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -18,6 +22,44 @@ export default function AddSongpage() {
       lyricsInputRef.current.value = richText;
     }
   };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true)
+    try {
+      const formData = new FormData(event.target as HTMLFormElement);
+      const response = await fetch('/api/song', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        toast({
+          title: '✅ Canción creada con éxito',
+          variant: "success"
+
+        });
+        // Redirect to song list or another page
+        router.replace("/song");
+        router.refresh();
+
+      } else {
+        toast({
+          title: '❌ Error al crear canción',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: '❌ Error al crear canción',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
   return (
     <section className="flex flex-col md:container items-center ">
       <h1 className='font-bold items-center md:items-start text-3xl lg:text-5xl'>Cargar Canción</h1>
@@ -26,8 +68,7 @@ export default function AddSongpage() {
       <div className="mb-32 text-left w-[80vw] max-w-2xl flex flex-col">
 
         <form
-          action="/api/song"
-          method="post"
+          onSubmit={handleSubmit}
           className="flex flex-col w-full gap-3"
         >
           <div>
@@ -137,9 +178,9 @@ export default function AddSongpage() {
             <Button
               type="submit"
               variant={'default'}
-              title="View Orders"
+              disabled={isLoading}
             >
-              <span>Enviar</span>
+              {isLoading ? 'Cargando...' : 'Enviar'}
             </Button>
           </div>
         </form>

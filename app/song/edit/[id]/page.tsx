@@ -10,12 +10,14 @@ import { useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getSongById } from '@/lib/_actions';
 import Loading from './loading';
+import { toast } from '@/components/ui/use-toast';
 
 export const runtime = 'edge';
 
 
 
 export default function EditSongPage({ params }: { params: { id: string } }) {
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
@@ -72,6 +74,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault(); // Prevent the default form submission
+    setIsLoading(true);
     const data = new FormData();
     data.append('name', formData.name);
     data.append('author', formData.author);
@@ -85,20 +88,32 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
         method: 'PUT',
         body: data,
       });
-      console.log("console log res:",res)
+ 
       if (res.ok) {
-        router.push('/song')
-        revalidatePath('/song')
+        router.replace("/song");
+        router.refresh();
+        toast({
+          title: '✅ Canción actualizada',
+        })
+    
 
-        return { success: true };
       } else {
-        const errorData = await res.json();
-        console.error('Error updating song:', errorData);
-        return { success: false, error: errorData };
+        toast({
+          title: '❌ Error al Actualizar',
+          variant: 'destructive'
+        })
+    
       }
     } catch (error) {
+      toast({
+        title: '❌ Canción error',
+        variant: 'destructive'
+      })
       console.error('Error updating Song:', error);
       return { success: false, error: 'Unexpected error occurred' };
+    }
+    finally {
+      setIsLoading(false);
     }
    
   };
@@ -226,9 +241,9 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
             <Button
               type="submit"
               variant={'default'}
-              title="View Orders"
-            >
-              <span>Enviar</span>
+                disabled={isLoading}
+              >
+                {isLoading ? 'Actualizando...' : 'Actualizar'}
             </Button>
           </div>
         </form>

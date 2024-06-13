@@ -7,6 +7,7 @@ import { getAllSongs } from '@/lib/_actions';
 export const runtime = 'edge';
 export const revalidate = 0;
 
+
 export default async function page() {
   const { songs } = await getAllSongs();
   const sortedSongs = songs.sort((a, b) => a.name.localeCompare(b.name));
