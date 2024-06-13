@@ -20,14 +20,6 @@ export function Toolbar({ editor }: Props) {
 
   return (
     <div className="border border-input py-1  bg-transparent rounded-t-md text-foreground">
-      <Toggle
-        size={"sm"}
-        pressed={editor.isActive("heading", { level: 1 })}
-        onPressedChange={() =>
-          editor.chain().focus().toggleHeading({ level: 1 }).run()
-        }>
-        <Heading2 className="w-5 h-5" />
-      </Toggle>
 
       <Toggle
         size={"sm"}

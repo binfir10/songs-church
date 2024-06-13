@@ -14,11 +14,29 @@ type PageProps = {
     id: string;
   };
 };
+function replacePWhithBr(lyric: any) {
+  const p = lyric.split('<p>').map((item: any) => item.split('</p>')[0]);
+  const paragraphProcessed = p.map((paragraph: any, index: any) => {
+
+    if (paragraph.trim() === '') {
+      return '<br>'; 
+    } else {
+      return `<p>${paragraph}</p>`; 
+    }
+  }).join('');
+
+  return { __html: paragraphProcessed };
+}
 
 export default async function Page({ params }: PageProps) {
   console.log(params.id);
   
   const song = await getSongById(params.id);
+  if (!song?.lyrics) {
+    return null;
+  }
+
+  const lyric = replacePWhithBr(song.lyrics);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -49,12 +67,11 @@ export default async function Page({ params }: PageProps) {
         </span>
       </div>
 
-      <div className="flex flex-col">
+      <div className="">
         <span>Letra:</span>
-        <div
-          className=" rounded-md p-2 w-full max-w-2xl mt-1"
-          dangerouslySetInnerHTML={{ __html: song?.lyrics ?? "" }}
-          />
+
+
+          <div dangerouslySetInnerHTML={lyric} className="font-extralight etiquetas"></div>
       </div>
 
     </section>

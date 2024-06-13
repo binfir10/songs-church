@@ -5,15 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Tiptap from '@/components/Editor';
 import { useRef, useState, useEffect, Suspense } from 'react';
-
 import { useRouter } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 import { getSongById } from '@/lib/_actions';
 import Loading from './loading';
 import { toast } from '@/components/ui/use-toast';
 
 export const runtime = 'edge';
-
 
 
 export default function EditSongPage({ params }: { params: { id: string } }) {
@@ -66,6 +63,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
   const handleLyricsChange = (richText: string) => {
     setFormData(prevState => ({
       ...prevState,
+      lyrics: richText
     }));
     if (lyricsInputRef.current) {
       lyricsInputRef.current.value = richText;
@@ -82,7 +80,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
     data.append('man', formData.man);
     data.append('woman', formData.woman);
     data.append('lyrics', formData.lyrics);
-    console.log("console log data:", data)
+
     try {
       const res = await fetch(`/api/song/${params.id}`, {
         method: 'PUT',
@@ -227,7 +225,8 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
             </Select>
           </div>
 
-          <Tiptap onChange={handleLyricsChange} value={formData.lyrics} />
+            <Tiptap onChange={handleLyricsChange} value={formData.lyrics} />
+
 
           {/* Campo oculto para las lyrics */}
           <input

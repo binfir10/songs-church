@@ -78,6 +78,10 @@ p {
   text-wrap: pretty;
 }
 
+.etiquetas p strong {
+  font-weight: 700;
+}
+
 h1, h2, h3 {
   text-wrap: balance;
 }
