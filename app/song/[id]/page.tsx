@@ -44,13 +44,13 @@ export default async function Page({ params }: PageProps) {
     <section className="flex flex-col sm:container gap-5 justify-center px-2 min-[350px]:px-8 2xl:w-9/12">
       <div className="flex justify-between w-11/12 gap-3 max-sm:flex-col">
         <div className="font-bold text-left text-4xl lg:text-5xl flex max-md:flex-col max-md:items-start items-center gap-3 ">
-          <h1 className="underline underline-offset-8 decoration-primary/30">   {song?.name}</h1>
+          <h2 className="underline underline-offset-8 decoration-primary/30">   {song?.name}</h2>
        
           <Badge variant="secondary" className="text-base no-underline">
             {song?.author}
           </Badge>
         </div>
-        <div className="flex gap-2 flex-col md:flex-row max-w-xs">
+        <div className="flex gap-2 flex-col md:flex-row max-w-xs items-center">
           <Button asChild size={"sm"} variant={"outline"}>
             <Link href={`/song/edit/${params.id}`}>Editar</Link>
           </Button>

@@ -7,16 +7,17 @@ export const revalidate = 0;
 
 export default async function page() {
   return (
-    <section className='flex flex-col md:container gap-5   px-3 2xl:w-9/12  items-center justify-center hero  '>
-      <h1 className='font-bold text-left text-4xl lg:text-5xl'>Página Principal</h1>
-      <div>
-          <Button asChild>
+    <section className='flex  md:container flex-col md:flex-row gap-5 items-center justify-between  px-3 2xl:w-11/12  '>
+      <div className='flex flex-col gap-5'>
+      <h1 className='font-extrabold text-center md:text-left max-[300px]:text-4xl text-5xl sm:text-6xl lg:text-7xl text-foreground'>MINISTERIO <br /> DE ALABANZA</h1>
+          <Button asChild variant={'default'}>
         <Link href="/song">
             Ir a Canciones
           </Link>
           </Button>
 
       </div>
+      <Image src="/fondo.jpg" alt='' height={1000} width={1000} className='w-11/12 md:w-1/2 aspect-auto rounded-md'/>
 
 
     </section>

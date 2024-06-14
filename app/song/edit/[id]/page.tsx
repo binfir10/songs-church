@@ -88,7 +88,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
       });
  
       if (res.ok) {
-        router.replace("/song");
+        router.replace(`/song/${params.id}`);
         router.refresh();
         toast({
           title: '✅ Canción actualizada',
@@ -236,7 +236,16 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
             ref={lyricsInputRef}
           />
 
-          <div className="flex justify-center p-2">
+            <div className="flex justify-center p-2 gap-5">
+              <Button
+                variant={'outline'}
+                onClick={(e) => {
+                  e.preventDefault()
+                  router.back()
+                }}
+              >
+            Cancelar
+              </Button>
             <Button
               type="submit"
               variant={'default'}

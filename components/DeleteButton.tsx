@@ -6,7 +6,17 @@ import { useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { toast } from './ui/use-toast';
 import { useState } from 'react';
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 interface DeleteButtonProps {
   songId: string;
 }
@@ -34,10 +44,25 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({ songId }) => {
   };
 
   return (
-    <Button size={"sm"} variant={'destructive'}
-      onClick={handleClick} disabled={isLoading}
-    >
-      {isLoading ? "Eliminando..." : "Eliminar"}
-    </Button>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" size={'sm'}>
+          Eliminar
+          <span className="sr-only">Borrar</span>
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Esta acción no se puede deshacer y eliminará permanentemente la canción.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={handleClick} className="bg-destructive text-destructive-foreground hover:bg-destructive/80 ">Continuar</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

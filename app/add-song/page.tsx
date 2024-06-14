@@ -174,7 +174,16 @@ export default function AddSongpage() {
 
 
 
-          <div className="flex justify-center p-2">
+          <div className="flex justify-center p-2 gap-5">
+            <Button
+              variant={'outline'}
+              onClick={(e) => {
+                e.preventDefault()
+                router.back()
+              }}
+            >
+              Cancelar
+            </Button>
             <Button
               type="submit"
               variant={'default'}
