@@ -1,7 +1,10 @@
 'use server'
-import { NextApiRequest } from "next";
 import { tursoClient } from "./tursoClient";
 import { Songs } from "./types";
+import { Resend } from "resend"
+import { render } from "@react-email/render"
+import EmailTemplate from "@/components/EmailTemplate";
+
 
 export async function getSongById(id: string): Promise<Songs | null> {
   try {
@@ -62,3 +65,32 @@ export async function deleteSong(id: string) {
   }
 }
 
+
+export const sendEmail = async (state: string, formData: FormData) => {
+  const name = formData.get("name") as string
+  const author = formData.get("author") as string
+  const tone = formData.get("tone") as string
+    const man = formData.get("man") as string
+  const woman = formData.get("woman") as string
+  const lyrics = formData.get("lyrics") as string
+  try {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const emailSender = process.env.EMAIL_SENDER_NAME!
+    await resend.emails.send({
+      from: "EPDLC <onboarding@resend.dev>",
+      to: [emailSender],
+      subject: `${state} de canción`, //asunto
+      html: render(EmailTemplate({state, name, author, tone, man, woman, lyrics}))
+    })
+    return {
+      error: null,
+      success: true
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      error: (error as Error).message,
+      success: false
+    }
+  }
+}

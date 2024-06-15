@@ -7,6 +7,7 @@ import Tiptap from '@/components/Editor';
 import { useRef, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { sendEmail } from '@/lib/_actions';
 export const runtime = 'edge';
 
 
@@ -32,17 +33,15 @@ export default function AddSongpage() {
         method: 'POST',
         body: formData,
       });
-      
-
       const result = await response.json();
+
       if (response.ok) {
-        
+        //sendEmail("Actualización", formData)
         toast({
           title: '✅ Canción creada con éxito',
           variant: "success"
 
         });
-        // Redirect to song list or another page
         router.replace("/song");
         router.refresh();
 
@@ -181,6 +180,7 @@ export default function AddSongpage() {
             <Button
               variant={'outline'}
               className='w-32'
+              size={'sm'}
               onClick={(e) => {
                 e.preventDefault()
                 router.back()
@@ -192,6 +192,7 @@ export default function AddSongpage() {
               type="submit"
               variant={'default'}
               className='w-32'
+              size={'sm'}
               disabled={isLoading}
             >
               {isLoading ? 'Cargando...' : 'Enviar'}

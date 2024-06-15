@@ -17,7 +17,12 @@ export default async function page() {
           </Button>
 
       </div>
-      <Image src="/fondo.jpg" alt='' height={1000} width={1000} className='w-11/12 md:w-1/2 aspect-auto rounded-md'/>
+      <div className='w-11/12 md:w-1/2 aspect-auto rounded-md'>
+
+        <Image src="/fondo.jpg" alt='' height={950} width={1000} className='rounded-md'
+          placeholder='empty'
+          priority={false}/>
+      </div>
 
 
     </section>

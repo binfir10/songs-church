@@ -41,23 +41,49 @@ export default async function Page({ params }: PageProps) {
   return (
     <Suspense fallback={<Loading />}>
 
-    <section className="flex flex-col sm:container gap-5 justify-center px-2 min-[350px]:px-8 2xl:w-9/12">
-      <div className="flex justify-between w-11/12 gap-3 max-sm:flex-col">
-        <div className="font-bold text-left text-4xl lg:text-5xl flex max-md:flex-col max-md:items-start items-center gap-3 ">
-          <h2 className="underline underline-offset-8 decoration-primary/30">   {song?.name}</h2>
-       
-          <Badge variant="secondary" className="text-base no-underline">
-            {song?.author}
-          </Badge>
-        </div>
-        <div className="flex gap-2 flex-col md:flex-row max-w-xs items-center">
-          <Button asChild size={"sm"} variant={"outline"} className="w-full">
-            <Link href={`/song/edit/${params.id}`}>Editar</Link>
-          </Button>
-          <DeleteButton songId={song?.id as string} />
-        </div>
+
+      <section className="flex flex-col sm:container gap-5 justify-center px-2 min-[350px]:px-8 2xl:w-9/12">
+        <div className="hidden sm:block">
+
+          <div className="flex justify-between w-full gap-3 max-sm:flex-col">
+            <div className="font-bold text-left text-4xl lg:text-5xl flex max-md:flex-col max-md:items-start items-center gap-3 ">
+              <h2 className="underline underline-offset-8 decoration-primary/30 text-5xl max-[450px]:text-4xl">   {song?.name}</h2>
+
+              <Badge variant="secondary" className="text-base no-underline">
+                {song?.author}
+              </Badge>
+            </div>
+          <div className="flex gap-2 justify-between md:max-w-xs items-end mb-4">
+            <Button asChild size={"sm"} variant={"outline"} className="w-24 md:w-full">
+              <Link href={`/song/edit/${params.id}`}>Editar</Link>
+            </Button>
+            <DeleteButton songId={song?.id as string} />
+          </div>
+
+        
   
       </div>
+        </div>
+        <div className="block sm:hidden">
+
+          <div className="flex justify-between w-full gap-3 max-sm:flex-col">
+            <div className="flex gap-2 justify-between md:max-w-xs items-end mb-4">
+              <Button asChild size={"sm"} variant={"outline"} className="w-24 md:w-full">
+                <Link href={`/song/edit/${params.id}`}>Editar</Link>
+              </Button>
+              <DeleteButton songId={song?.id as string} />
+            </div>
+            <div className="font-bold text-left text-4xl lg:text-5xl flex max-md:flex-col max-md:items-start items-center gap-3 ">
+              <h2 className="underline underline-offset-8 decoration-primary/30 text-5xl max-[450px]:text-4xl">   {song?.name}</h2>
+
+              <Badge variant="secondary" className="text-base no-underline">
+                {song?.author}
+              </Badge>
+            </div>
+
+
+          </div>
+        </div>
       <div className="flex flex-col gap-1 my-2 ">
         <span className="text-base font-bold">
           Hombre: <Badge variant={"secondary"} className="text-base h-7 max-h-7 bg-primary/20 hover:bg-primary/60">{song?.man || "--"}</Badge>
@@ -71,10 +97,11 @@ export default async function Page({ params }: PageProps) {
         <span>Letra:</span>
 
 
-          <div dangerouslySetInnerHTML={lyric} className="font-extralight etiquetas"></div>
+          <div dangerouslySetInnerHTML={lyric} className="font-extralight etiquetas text-lg"></div>
       </div>
 
     </section>
+  
           </Suspense>
   );
 }

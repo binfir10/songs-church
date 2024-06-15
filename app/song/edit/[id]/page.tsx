@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Tiptap from '@/components/Editor';
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSongById } from '@/lib/_actions';
+import { getSongById, sendEmail } from '@/lib/_actions';
 import Loading from './loading';
 import { toast } from '@/components/ui/use-toast';
 
@@ -88,6 +88,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
       });
  
       if (res.ok) {
+        //sendEmail("Actualización", data)
         router.replace(`/song/${params.id}`);
         router.refresh();
         toast({
@@ -240,6 +241,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
               <Button
                 variant={'outline'}
                 className='w-32'
+                size={'sm'}
                 onClick={(e) => {
                   e.preventDefault()
                   router.back()
@@ -251,6 +253,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
               type="submit"
                 variant={'default'}
                 className='w-32'
+                size={'sm'}
                 disabled={isLoading}
               >
                 {isLoading ? 'Actualizando...' : 'Actualizar'}
