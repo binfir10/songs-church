@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Tiptap from '@/components/Editor';
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSongById, sendEmail } from '@/lib/_actions';
+import { getSongById } from '@/lib/_actions';
 import Loading from './loading';
 import { toast } from '@/components/ui/use-toast';
 

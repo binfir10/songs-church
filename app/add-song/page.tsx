@@ -7,7 +7,7 @@ import Tiptap from '@/components/Editor';
 import { useRef, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { sendEmail } from '@/lib/_actions';
+//import { sendEmail } from '@/lib/_actions';
 export const runtime = 'edge';
 
 
