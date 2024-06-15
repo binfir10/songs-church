@@ -32,8 +32,11 @@ export default function AddSongpage() {
         method: 'POST',
         body: formData,
       });
+      
 
+      const result = await response.json();
       if (response.ok) {
+        
         toast({
           title: '✅ Canción creada con éxito',
           variant: "success"
@@ -45,7 +48,7 @@ export default function AddSongpage() {
 
       } else {
         toast({
-          title: '❌ Error al crear canción',
+          title: `❌ Error: ${result.error}`,
           variant: 'destructive',
         });
       }
@@ -79,7 +82,7 @@ export default function AddSongpage() {
               name="name"
               id="song-name"
               placeholder="Nombre de la cancion"
-              required
+         
             />
           </div>
 
@@ -91,7 +94,7 @@ export default function AddSongpage() {
               name="author"
               id="author"
               placeholder="Hillsong"
-              required
+          
             />
           </div>
 
@@ -177,6 +180,7 @@ export default function AddSongpage() {
           <div className="flex justify-center p-2 gap-5">
             <Button
               variant={'outline'}
+              className='w-32'
               onClick={(e) => {
                 e.preventDefault()
                 router.back()
@@ -187,6 +191,7 @@ export default function AddSongpage() {
             <Button
               type="submit"
               variant={'default'}
+              className='w-32'
               disabled={isLoading}
             >
               {isLoading ? 'Cargando...' : 'Enviar'}

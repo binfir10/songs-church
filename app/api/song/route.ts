@@ -18,10 +18,17 @@ export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const { name, author, man, woman, tone, lyrics } = Object.fromEntries(formData);
 
-  if (!name || !author) {
-    NextResponse.redirect(addNewUrl, {
-      status: 422,
-    });
+  if (!name) {
+ return NextResponse.json({ error: 'El nombre es requerido' }, { status: 422 });
+    
+  }
+      if (!author) {
+ return NextResponse.json({ error: 'El autor es requerido' }, { status: 422 });
+    
+      }
+          if (!lyrics) {
+ return NextResponse.json({ error: 'La letra es requerida' }, { status: 422 });
+    
   }
   if (
     typeof name !== 'string' ||
@@ -31,9 +38,7 @@ export async function POST(req: NextRequest) {
     typeof tone !== 'string' ||
     typeof lyrics !== 'string'
   ) {
-    return NextResponse.redirect(addNewUrl, {
-      status: 422,
-    });
+ return NextResponse.json({ error: 'Datos inválidos' }, { status: 422 });
   }
 
   const songExists = await getSongs(name as string);
@@ -48,14 +53,11 @@ export async function POST(req: NextRequest) {
     args: [id,filter.clean(name), filter.clean(author), man, woman, tone, filter.clean(lyrics)],
   });
 
-  return NextResponse.redirect(addNewUrl, {
-    status: 302,
-  });
+ return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.redirect(addNewUrl, {
-      status: 500,
-    });
+return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
+  
   }
   
 }

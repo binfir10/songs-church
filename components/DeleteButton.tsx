@@ -46,7 +46,7 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({ songId }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" size={'sm'}>
+        <Button variant="destructive" size={'sm'} className='w-full'>
           Eliminar
           <span className="sr-only">Borrar</span>
         </Button>

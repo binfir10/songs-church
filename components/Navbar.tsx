@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "./mode-toogle";
@@ -10,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Icons } from "./ui/icons";
+import { useState } from "react";
 
 const link = [
   {
@@ -60,6 +62,11 @@ function NavbarDesktop() {
 }
 
 function NavbarMobile() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   return (
     <header className="block md:hidden">
       <nav className="fixed left-0 top-0 flex w-screen border-b border-primary/30 backdrop-blur-sm justify-between px-4 items-center h-16 z-10">
@@ -71,7 +78,7 @@ function NavbarMobile() {
         <ul className="flex items-center gap-3">
           <ModeToggle />
 
-          <Sheet>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger>{<Icons.menu /> }</SheetTrigger>
             <SheetContent>
               <SheetHeader>
@@ -80,7 +87,9 @@ function NavbarMobile() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="hover:underline flex items-center gap-1 justify-center tracking-wide font-light">
+                      className="hover:underline flex items-center gap-1 justify-center tracking-wide font-light "
+                      onClick={handleClose}
+                    >
                       {item.name}
                       <span>{item.icon}</span>
                  

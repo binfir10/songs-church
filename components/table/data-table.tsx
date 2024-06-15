@@ -19,8 +19,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import Link from 'next/link'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -49,7 +50,7 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
   return (
     <div className=''>
       {/*filter*/}
-      <div className="flex items-center py-4 min-w-full">
+      <div className="flex items-center py-4 gap-4 min-w-full">
         <Input
           placeholder="Buscar por Nombre..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -58,6 +59,8 @@ export function DataTable<TData, TValue>({ columns, data, }: DataTableProps<TDat
           }
           className="max-w-sm"
         />
+        <Link href="/add-song" className={buttonVariants({ variant: "outline" })}>Agregar
+        </Link>
       </div>
       {/*table*/}
       <div className="rounded-md border border-muted">

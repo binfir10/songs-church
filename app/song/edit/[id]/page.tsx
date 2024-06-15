@@ -239,6 +239,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
             <div className="flex justify-center p-2 gap-5">
               <Button
                 variant={'outline'}
+                className='w-32'
                 onClick={(e) => {
                   e.preventDefault()
                   router.back()
@@ -248,7 +249,8 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
               </Button>
             <Button
               type="submit"
-              variant={'default'}
+                variant={'default'}
+                className='w-32'
                 disabled={isLoading}
               >
                 {isLoading ? 'Actualizando...' : 'Actualizar'}

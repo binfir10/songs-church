@@ -51,7 +51,7 @@ export default async function Page({ params }: PageProps) {
           </Badge>
         </div>
         <div className="flex gap-2 flex-col md:flex-row max-w-xs items-center">
-          <Button asChild size={"sm"} variant={"outline"}>
+          <Button asChild size={"sm"} variant={"outline"} className="w-full">
             <Link href={`/song/edit/${params.id}`}>Editar</Link>
           </Button>
           <DeleteButton songId={song?.id as string} />
