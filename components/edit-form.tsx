@@ -61,7 +61,6 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
     }
   };
   const handleSubmit = async (e: React.FormEvent) => {
-
     e.preventDefault(); // Prevent the default form submission
     setIsLoading(true);
     const data = new FormData();
