@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
-export const runtime = 'edge';
+
 export const revalidate = 0;
 
 export default async function page() {
