@@ -1,14 +1,15 @@
 'use client'
 import { Label, Input, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Tiptap } from '@/components/editFormComponents';
-import { useRef, useState, useEffect, useRouter, getSongById, toast } from '@/components/editFomUtils';
+import { useRef, useState, useRouter} from '@/components/editFomUtils';
 //import { sendEmail } from '@/lib/_actions';
-
+import { useNotifications } from '@/components/notifications';
 
 export default function AddSong() {
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [lyrics, setLyrics] = useState('');
   const lyricsInputRef = useRef<HTMLInputElement | null>(null);
+  const { showSuccessToast, showErrorToast, navigateTo } = useNotifications();
 
   const handleLyricsChange = (richText: string) => {
     setLyrics(richText);
@@ -19,7 +20,7 @@ export default function AddSong() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const formData = new FormData(event.target as HTMLFormElement);
       const response = await fetch('/api/song', {
@@ -29,31 +30,19 @@ export default function AddSong() {
       const result = await response.json();
 
       if (response.ok) {
-        //sendEmail("Actualización", formData)
-        toast({
-          title: '✅ Canción creada con éxito',
-          variant: "success"
-
-        });
-        router.replace("/song");
-        router.refresh();
-
+        showSuccessToast('Canción creada con éxito');
+        navigateTo('/song');
       } else {
-        toast({
-          title: `❌ Error: ${result.error}`,
-          variant: 'destructive',
-        });
+        showErrorToast(result.error);
       }
     } catch (error) {
       console.error(error);
-      toast({
-        title: '❌ Error al crear canción',
-        variant: 'destructive',
-      });
+      showErrorToast('Error al crear canción');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
+
 
   return (
     <section className="flex flex-col md:container items-center ">
