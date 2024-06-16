@@ -1,13 +1,7 @@
 'use client'
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import Tiptap from '@/components/Editor';
-import { useRef, useState, useEffect} from 'react';
-import { useRouter } from 'next/navigation';
-import { getSongById } from '@/lib/_actions';
-import { toast } from '@/components/ui/use-toast';
+import { Label, Input, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Tiptap } from '@/components/editFormComponents';
+import { useRef, useState, useEffect, useRouter, getSongById, toast } from '@/components/editFomUtils';
+
 
 
 export default function EditSongPage({ params }: { params: { id: string } }) {
@@ -71,13 +65,9 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
     e.preventDefault(); // Prevent the default form submission
     setIsLoading(true);
     const data = new FormData();
-    data.append('name', formData.name);
-    data.append('author', formData.author);
-    data.append('tone', formData.tone);
-    data.append('man', formData.man);
-    data.append('woman', formData.woman);
-    data.append('lyrics', formData.lyrics);
-
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
+    });
     try {
       const res = await fetch(`/api/song/${params.id}`, {
         method: 'PUT',

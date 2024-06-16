@@ -1,12 +1,6 @@
 'use client'
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import Tiptap from '@/components/Editor';
-import { useRef, useState } from 'react';
-import { toast } from '@/components/ui/use-toast';
-import { useRouter } from 'next/navigation';
+import { Label, Input, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Tiptap } from '@/components/editFormComponents';
+import { useRef, useState, useEffect, useRouter, getSongById, toast } from '@/components/editFomUtils';
 //import { sendEmail } from '@/lib/_actions';
 
 
